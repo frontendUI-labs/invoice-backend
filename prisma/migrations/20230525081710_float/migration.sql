@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "InvoiceItem" ALTER COLUMN "quantity" SET DATA TYPE DOUBLE PRECISION;
