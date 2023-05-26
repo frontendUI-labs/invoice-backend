@@ -35,14 +35,10 @@ model Invoice {
   clientPostCode      String
   clientCountry       String
 
-  invoiceDate     DateTime
-  dueDate         DateTime
-  amount          String
-  billFromAddress String
-  items           InvoiceItem[]
-
-  totalAmount      Float @default(0)
-  grossTotalAmount Float @default(0)
+  invoiceDate  DateTime
+  dueDate      DateTime
+  amount       Float         @default(0)
+  invoiceItems InvoiceItem[]
 }
 
 model InvoiceItem {
@@ -51,5 +47,5 @@ model InvoiceItem {
   quantity  Int
   price     Float
   invoiceId String
-  Invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
 }

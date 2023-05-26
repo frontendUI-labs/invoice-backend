@@ -5,7 +5,7 @@ export const getInvoices = async (req, res) => {
   const invoice = await prisma.invoice.findMany({
     where: {},
     include: {
-      items: true,
+      invoiceItems: true,
     },
   });
 
@@ -20,6 +20,9 @@ export const getOneInvoice = async (req, res) => {
     where: {
       id,
     },
+    include: {
+      invoiceItems: true,
+    },
   });
 
   res.json({ data: invoice });
@@ -28,7 +31,12 @@ export const getOneInvoice = async (req, res) => {
 // Create one
 export const createInvoice = async (req, res) => {
   const invoice = await prisma.invoice.create({
-    data: req.body,
+    data: {
+      ...req.body,
+      invoiceItems: {
+        create: req.body.invoiceItems,
+      },
+    },
   });
 
   res.json({ data: invoice });
@@ -38,7 +46,7 @@ export const createInvoice = async (req, res) => {
 export const updateInvoice = async (req, res) => {
   const updated = await prisma.invoice.update({
     where: {
-      id: req.body.productId,
+      id: req.body.invoiceId,
     },
     data: req.body,
   });
@@ -47,10 +55,23 @@ export const updateInvoice = async (req, res) => {
 };
 
 // Delete one
+// export const deleteInvoice = async (req, res) => {
+//   const deleted = await prisma.invoice.delete({
+//     where: {
+//       id: req.body.invoiceId,
+//     },
+//   });
+//
+//   res.json({ data: deleted });
+// };
+//
+// delete an invoice
 export const deleteInvoice = async (req, res) => {
+  const invoiceId = req.params.id;
+
   const deleted = await prisma.invoice.delete({
     where: {
-      id: req.body.productId,
+      id: invoiceId,
     },
   });
 
