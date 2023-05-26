@@ -2,7 +2,8 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 import app from "./server";
+import config from "./config";
 
-app.listen(3003, () => {
-  console.log("starting services");
+app.listen(config.port, () => {
+  console.log("starting services in port: ", config.port);
 });
