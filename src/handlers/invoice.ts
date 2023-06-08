@@ -51,13 +51,15 @@ export const updateInvoice = async (req, res) => {
     data: {
       ...req.body,
       invoiceItems: {
-        upsert: req.body.invoiceItems.map((item) => ({
-          where: {
-            id: item.id,
-          },
-          update: item,
-          create: item,
-        })),
+        upsert: req.body.invoiceItems
+          ? req.body.invoiceItems.map((item) => ({
+              where: {
+                id: item.id,
+              },
+              update: item,
+              create: item,
+            }))
+          : [],
       },
     },
   });

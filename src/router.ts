@@ -17,10 +17,10 @@ const router = Router();
  */
 router.get("/invoice", getInvoices);
 router.get("/invoice/:id", getOneInvoice);
-router.put("/invoice", updateInvoice);
+router.put("/invoice", null, handleInputErrors, updateInvoice);
 router.post(
   "/invoice",
-  body("status").isIn(["DRAFT", "PENDING", "PAID"]).optional(),
+  body("invoiceItems").isArray(),
   handleInputErrors,
   createInvoice
 );
