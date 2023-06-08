@@ -6,6 +6,7 @@ import {
   getOneInvoice,
   getInvoices,
   updateInvoice,
+  deleteInvoiceItem,
 } from "./handlers/invoice";
 import { handleInputErrors } from "./modules/middleware";
 
@@ -16,12 +17,7 @@ const router = Router();
  */
 router.get("/invoice", getInvoices);
 router.get("/invoice/:id", getOneInvoice);
-router.put(
-  "/invoice/:id",
-  body("status").isIn(["DRAFT", "PENDING", "PAID"]).optional(),
-  handleInputErrors,
-  updateInvoice
-);
+router.put("/invoice", updateInvoice);
 router.post(
   "/invoice",
   body("status").isIn(["DRAFT", "PENDING", "PAID"]).optional(),
@@ -29,5 +25,6 @@ router.post(
   createInvoice
 );
 router.delete("/invoice/:id", deleteInvoice);
+router.delete("/invoice-item/:id", deleteInvoiceItem);
 
 export default router;

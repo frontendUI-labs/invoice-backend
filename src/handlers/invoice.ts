@@ -44,14 +44,25 @@ export const createInvoice = async (req, res) => {
 
 // Update one
 export const updateInvoice = async (req, res) => {
-  const updated = await prisma.invoice.update({
+  const invoice = await prisma.invoice.update({
     where: {
-      id: req.body.invoiceId,
+      id: req.body.id,
     },
-    data: req.body,
+    data: {
+      ...req.body,
+      invoiceItems: {
+        upsert: req.body.invoiceItems.map((item) => ({
+          where: {
+            id: item.id,
+          },
+          update: item,
+          create: item,
+        })),
+      },
+    },
   });
 
-  res.json({ data: updated });
+  res.json({ data: invoice });
 };
 
 // Delete one
@@ -72,6 +83,18 @@ export const deleteInvoice = async (req, res) => {
   const deleted = await prisma.invoice.delete({
     where: {
       id: invoiceId,
+    },
+  });
+
+  res.json({ data: deleted });
+};
+
+export const deleteInvoiceItem = async (req, res) => {
+  const invoiceItemId = req.params.id;
+
+  const deleted = await prisma.invoiceItem.delete({
+    where: {
+      id: invoiceItemId,
     },
   });
 
